@@ -83,7 +83,7 @@ async def show_trojan_menu(event):
     if valid(str(event.sender_id)) != "true":
         return await event.answer("Akses Ditolak!", alert=True)
 
-    trojan_menu_text = "╭─ **MENU TROJAN** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Trojan.\n│\n╰─ (Oleh: @FarelAE) ─╯"
+    trojan_menu_text = "╭─ **MENU TROJAN** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Trojan.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun Trojan", "trojan_create")],
         [Button.inline("Buat Akun Trial", "trojan_trial")],
