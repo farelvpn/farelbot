@@ -9,7 +9,7 @@ async def show_slowdns_menu_placeholder(event):
         return await event.answer("Akses Ditolak!", alert=True)
 
     # Pesan yang memberitahukan bahwa fitur ini belum tersedia
-    menu_text = "╭─ **MENU SLOWDNS** ─╮\n│\n├─ 🚧 Fitur ini sedang dalam\n│  pengembangan dan akan\n│  segera hadir.\n│\n╰─ (Oleh: @farellvpn) ─╯"
+    menu_text = "╭─ **MENU SLOWDNS** ─╮\n│\n├─ 🚧 Fitur ini sedang dalam\n│  pengembangan dan akan\n│  segera hadir.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     
     # Tombol untuk kembali ke menu pengaturan
     buttons = [
