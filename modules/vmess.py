@@ -88,7 +88,7 @@ async def show_vmess_menu(event):
     if valid(str(event.sender_id)) != "true":
         return await event.answer("Akses Ditolak!", alert=True)
 
-    vmess_menu_text = "╭─ **MENU VMESS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Vmess.\n│\n╰─ (Oleh: @FarelAE) ─╯"
+    vmess_menu_text = "╭─ **MENU VMESS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Vmess.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun Vmess", "vmess_create")],
         [Button.inline("Buat Akun Trial", "vmess_trial")],
