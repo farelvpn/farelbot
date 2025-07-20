@@ -30,7 +30,7 @@ async def menu(event):
     sender = await event.get_sender()
     if valid(str(sender.id)) != "true":
         # Menolak akses jika user ID tidak valid
-        return await event.respond("Akses Ditolak.", buttons=[[Button.url("Hubungi Admin", "https://t.me/Rerechan02")]])
+        return await event.respond("Akses Ditolak.", buttons=[[Button.url("Hubungi Admin", "https://t.me/farellvpn")]])
 
     # Menggunakan event.edit jika dari callback, event.reply jika dari command
     responder = event.edit if event.is_callback else event.reply
