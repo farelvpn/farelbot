@@ -18,6 +18,8 @@ uptime = DT.datetime.now()
 # Get configuration from environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_IDS_STR = os.getenv("ADMIN_IDS")
+CONTACT_USERNAME = os.getenv("CONTACT_USERNAME", "your_username") # Default value
+CONTACT_LINK = os.getenv("CONTACT_LINK", "https://t.me/your_username") # Default value
 API_ID = "6"
 API_HASH = "eb06d4abfb49dc3eeb1aeb98ae0f581e"
 
