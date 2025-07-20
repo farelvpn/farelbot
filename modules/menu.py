@@ -4,24 +4,17 @@ import subprocess
 def get_service_status(service_name):
     """Mengecek status layanan menggunakan systemctl dan mengembalikan 'ON' atau 'OFF'."""
     try:
-        # Perintah 'is-active' akan mengembalikan exit code 0 jika aktif
         status_check = subprocess.call(["systemctl", "is-active", "--quiet", service_name])
-        if status_check == 0:
-            return 'ON'
-        else:
-            return 'OFF'
+        return 'ON' if status_check == 0 else 'OFF'
     except FileNotFoundError:
-        # Jika systemctl tidak ditemukan (jarang terjadi di sistem modern)
         return 'N/A'
 
 def get_account_count(command):
     """Menjalankan perintah shell untuk menghitung jumlah akun."""
     try:
-        # Menjalankan perintah dan mengambil outputnya
         output = subprocess.check_output(command, shell=True, text=True).strip()
         return int(output)
     except (subprocess.CalledProcessError, ValueError, FileNotFoundError):
-        # Mengembalikan 0 jika perintah gagal, file tidak ada, atau output bukan angka
         return 0
 
 @bot.on(events.NewMessage(pattern=r"^[./](?:menu|start)$"))
@@ -29,15 +22,20 @@ def get_account_count(command):
 async def menu(event):
     sender = await event.get_sender()
     if valid(str(sender.id)) != "true":
-        # Menggunakan variabel dari .env
         return await event.respond("Akses Ditolak.", buttons=[[Button.url("Hubungi Admin", CONTACT_LINK)]])
 
-    # Menggunakan event.edit jika dari callback, event.reply jika dari command
-    responder = event.edit if event.is_callback else event.reply
-    await responder("`Mempersiapkan menu, mohon tunggu...`")
+    is_callback = hasattr(event, 'is_callback')
+    responder = event.edit if is_callback else event.reply
+
+    if is_callback:
+        await responder("`Mempersiapkan menu, mohon tunggu...`")
+    else:
+        # Kirim pesan "menunggu" baru, lalu kita akan mengeditnya
+        responder = await event.reply("`Mempersiapkan menu, mohon tunggu...`")
+        # Sekarang responder adalah objek pesan yang bisa diedit
+        responder = responder.edit
 
     # --- 1. Cek Status Layanan ---
-    # Nama layanan di systemd (mungkin perlu disesuaikan)
     status_dnstt = get_service_status('dnstt')
     status_sslh = get_service_status('sslh')
     status_xray = get_service_status('xray')
@@ -46,15 +44,13 @@ async def menu(event):
     status_proxy = get_service_status('nginx')
 
     # --- 2. Hitung Total Akun ---
-    # Daftar perintah untuk menghitung akun
     count_ssh = get_account_count("awk -F: '$3 >= 1000 && $1 != \"nobody\" {print $1}' /etc/passwd | wc -l")
-    count_noobz = get_account_count("cat /etc/noobzvpns/.noobz.db | sort | uniq | wc -l")
-    count_trojan = get_account_count("grep -c -E '^#!' /usr/local/etc/v2ray/config.json")
-    count_vless = get_account_count("grep -c -E '^#&' /usr/local/etc/v2ray/config.json")
-    count_vmess = get_account_count("grep -c -E '^###' /usr/local/etc/v2ray/config.json")
-    count_ss = get_account_count("grep -c -E '^###' /usr/local/etc/v2ray/config2.json")
-    count_socks = get_account_count("grep -c -E '^###!' /usr/local/etc/v2ray/config2.json")
-
+    count_noobz = get_account_count("cat /etc/noobzvpns/.noobz.db 2>/dev/null | sort | uniq | wc -l")
+    count_trojan = get_account_count("grep -c -E '^#!' /usr/local/etc/v2ray/config.json 2>/dev/null")
+    count_vless = get_account_count("grep -c -E '^#&' /usr/local/etc/v2ray/config.json 2>/dev/null")
+    count_vmess = get_account_count("grep -c -E '^###' /usr/local/etc/v2ray/config.json 2>/dev/null")
+    count_ss = get_account_count("grep -c -E '^###' /usr/local/etc/xray/config.json 2>/dev/null")
+    count_socks = get_account_count("grep -c -E '^###!' /usr/local/etc/xray/config.json 2>/dev/null")
 
     # --- 3. Format Pesan ---
     msg = f"""
@@ -77,7 +73,7 @@ async def menu(event):
 │  ├─ `Socks5   :` **{count_socks}**
 │  └─ `ShadowSocks:` **{count_ss}**
 │
-╰─ **Pilih Opsi Menu** ─╯
+╰─ **(Oleh: @{CONTACT_USERNAME})** ─╯
 """
 
     # --- 4. Buat Tombol Menu ---
@@ -89,5 +85,5 @@ async def menu(event):
         [Button.inline("⛭ PENGATURAN ⛭", "setting")]
     ]
 
-    # --- 5. Kirim Pesan ---
+    # --- 5. Kirim/Edit Pesan ---
     await responder(msg, buttons=inline_buttons)
