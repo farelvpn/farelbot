@@ -89,7 +89,7 @@ async def show_vless_menu(event):
     if valid(str(event.sender_id)) != "true":
         return await event.answer("Akses Ditolak!", alert=True)
 
-    vless_menu_text = "╭─ **MENU VLESS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Vless.\n│\n╰─ (Oleh: @FarelAE) ─╯"
+    vless_menu_text = "╭─ **MENU VLESS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Vless.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun Vless", "vless_create")],
         [Button.inline("Buat Akun Trial", "vless_trial")],
