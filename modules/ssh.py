@@ -36,7 +36,7 @@ async def show_ssh_menu(event):
     if valid(str(event.sender_id)) != "true":
         return await event.answer("Akses Ditolak!", alert=True)
 
-    ssh_menu_text = "╭─ **MENU SSH** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SSH.\n│\n╰─ (Oleh: @FarelAE) ─╯"
+    ssh_menu_text = "╭─ **MENU SSH** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SSH.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun Trial", "ssh_trial")],
         [Button.inline("Buat Akun SSH", "ssh_create")],
