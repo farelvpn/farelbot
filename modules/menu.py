@@ -30,7 +30,7 @@ async def menu(event):
     sender = await event.get_sender()
     if valid(str(sender.id)) != "true":
         # Menolak akses jika user ID tidak valid
-        return await event.respond("Akses Ditolak.", buttons=[[Button.url("Hubungi Admin", "https://t.me/FarelAE")]])
+        return await event.respond("Akses Ditolak.", buttons=[[Button.url("Hubungi Admin", "https://t.me/Rerechan02")]])
 
     # Menggunakan event.edit jika dari callback, event.reply jika dari command
     responder = event.edit if event.is_callback else event.reply
@@ -38,12 +38,12 @@ async def menu(event):
 
     # --- 1. Cek Status Layanan ---
     # Nama layanan di systemd (mungkin perlu disesuaikan)
-    status_dnstt = get_service_status('slowdns') # Ganti 'slowdns' jika nama service berbeda
+    status_dnstt = get_service_status('dnstt')
     status_sslh = get_service_status('sslh')
     status_xray = get_service_status('xray')
     status_v2ray = get_service_status('v2ray')
     status_dropbear = get_service_status('dropbear')
-    status_proxy = get_service_status('nginx') # Diasumsikan proxy adalah nginx
+    status_proxy = get_service_status('nginx')
 
     # --- 2. Hitung Total Akun ---
     # Daftar perintah untuk menghitung akun
