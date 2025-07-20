@@ -26,7 +26,7 @@ async def show_backup_menu(event):
     if valid(str(event.sender_id)) != "true":
         return await event.answer("Akses Ditolak!", alert=True)
 
-    menu_text = "╭─ **BACKUP & RESTORE** ─╮\n│\n├─ Pilih opsi untuk membackup\n│  atau merestore data server.\n│\n╰─ (Oleh: @FarelAE) ─╯"
+    menu_text = "╭─ **BACKUP & RESTORE** ─╮\n│\n├─ Pilih opsi untuk membackup\n│  atau merestore data server.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("➡️ Mulai Backup", "start_backup")],
         [Button.inline("⬅️ Mulai Restore", "start_restore")],
