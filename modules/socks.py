@@ -96,7 +96,7 @@ async def show_socks_menu(event):
     if valid(str(event.sender_id)) != "true":
         return await event.answer("Akses Ditolak!", alert=True)
 
-    socks_menu_text = "╭─ **MENU XRAY SOCKS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SOCKS5.\n│\n╰─ (Oleh: @FarelAE) ─╯"
+    socks_menu_text = "╭─ **MENU XRAY SOCKS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SOCKS5.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun SOCKS5", "socks_create")],
         [Button.inline("Buat Akun Trial", "socks_trial")],
