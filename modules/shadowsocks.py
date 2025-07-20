@@ -91,7 +91,7 @@ async def show_ss_menu(event):
     if valid(str(event.sender_id)) != "true":
         return await event.answer("Akses Ditolak!", alert=True)
 
-    ss_menu_text = "╭─ **MENU SHADOWSOCKS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SS.\n│\n╰─ (Oleh: @FarelAE) ─╯"
+    ss_menu_text = "╭─ **MENU SHADOWSOCKS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SS.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun SS", "ss_create")],
         [Button.inline("Buat Akun Trial", "ss_trial")],
