@@ -36,11 +36,11 @@ except ValueError:
     sys.exit(1)
 
 # Initialize Telegram client
+# Nama file session akan dibuat secara otomatis, contoh: farelbot.session
 bot = TelegramClient("farelbot", API_ID, API_HASH).start(bot_token=BOT_TOKEN)
 
 # Database setup
-db_path = "farelbot/database.db"
-os.makedirs("farelbot", exist_ok=True)
+db_path = "database.db" # Menyimpan database di direktori utama bot
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
@@ -78,3 +78,10 @@ def convert_size(size_bytes):
    p = math.pow(1024, i)
    s = round(size_bytes / p, 2)
    return "%s %s" % (s, size_name[i])
+
+# Helper function to run scripts, used by some modules
+def run_script(command):
+    try:
+        return subprocess.check_output(command, shell=True, text=True).strip()
+    except Exception:
+        return "Error executing script."
