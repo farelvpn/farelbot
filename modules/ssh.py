@@ -28,7 +28,6 @@ async def show_ssh_menu(event):
     ssh_menu_text = f"╭─ **MENU SSH** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SSH.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun SSH", "ssh_create"), Button.inline("Buat Akun Trial", "ssh_trial")],
-        [Button.inline("Perpanjang Akun", "ssh_renew"), Button.inline("Hapus Akun", "ssh_delete")],
         [Button.inline("Cek Login Pengguna", "ssh_check")],
         [Button.inline("« Kembali ke Menu Utama", "menu")]
     ]
