@@ -71,7 +71,6 @@ async def show_socks_menu(event):
     socks_menu_text = f"╭─ **MENU XRAY SOCKS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun SOCKS5.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun SOCKS5", "socks_create"), Button.inline("Buat Akun Trial", "socks_trial")],
-        [Button.inline("Perpanjang Akun", "socks_renew"), Button.inline("Hapus Akun", "socks_delete")],
         [Button.inline("Cek Login", "socks_check"), Button.inline("Cek Trafik", "socks_traffic")],
         [Button.inline("« Kembali ke Menu Utama", "menu")]
     ]
