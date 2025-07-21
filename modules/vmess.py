@@ -68,7 +68,6 @@ async def show_vmess_menu(event):
     vmess_menu_text = f"╭─ **MENU VMESS** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Vmess.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun Vmess", "vmess_create"), Button.inline("Buat Akun Trial", "vmess_trial")],
-        [Button.inline("Perpanjang Akun", "vmess_renew"), Button.inline("Hapus Akun", "vmess_delete")],
         [Button.inline("Cek Login", "vmess_check"), Button.inline("Cek Trafik", "vmess_traffic")],
         [Button.inline("« Kembali ke Menu Utama", "menu")]
     ]
