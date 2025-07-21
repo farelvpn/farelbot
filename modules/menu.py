@@ -4,17 +4,21 @@ import subprocess
 def get_service_status(service_name):
     """Mengecek status layanan menggunakan systemctl dan mengembalikan 'ON' atau 'OFF'."""
     try:
+        # Perintah 'is-active' akan mengembalikan exit code 0 jika aktif
         status_check = subprocess.call(["systemctl", "is-active", "--quiet", service_name])
         return 'ON' if status_check == 0 else 'OFF'
     except FileNotFoundError:
+        # Jika systemctl tidak ditemukan
         return 'N/A'
 
 def get_account_count(command):
     """Menjalankan perintah shell untuk menghitung jumlah akun."""
     try:
+        # Menjalankan perintah dan mengambil outputnya
         output = subprocess.check_output(command, shell=True, text=True).strip()
         return int(output)
     except (subprocess.CalledProcessError, ValueError, FileNotFoundError):
+        # Mengembalikan 0 jika perintah gagal atau file tidak ada
         return 0
 
 @bot.on(events.NewMessage(pattern=r"^[./](?:menu|start)$"))
@@ -22,21 +26,22 @@ def get_account_count(command):
 async def menu(event):
     sender = await event.get_sender()
     if valid(str(sender.id)) != "true":
+        # .respond() bekerja untuk kedua jenis event (pesan baru & callback)
         return await event.respond("Akses Ditolak.", buttons=[[Button.url("Hubungi Admin", CONTACT_LINK)]])
 
+    # Pengecekan event yang aman untuk menghindari error
     is_callback = hasattr(event, 'is_callback')
-    responder = event.edit if is_callback else event.reply
-
+    
     if is_callback:
+        responder = event.edit
         await responder("`Mempersiapkan menu, mohon tunggu...`")
     else:
-        # Kirim pesan "menunggu" baru, lalu kita akan mengeditnya
-        responder = await event.reply("`Mempersiapkan menu, mohon tunggu...`")
-        # Sekarang responder adalah objek pesan yang bisa diedit
-        responder = responder.edit
+        # Untuk pesan baru, kita kirim pesan dulu, baru kita edit
+        msg_to_edit = await event.reply("`Mempersiapkan menu, mohon tunggu...`")
+        responder = msg_to_edit.edit
 
     # --- 1. Cek Status Layanan ---
-    status_dnstt = get_service_status('dnstt')
+    status_dnstt = get_service_status('slowdns')
     status_sslh = get_service_status('sslh')
     status_xray = get_service_status('xray')
     status_v2ray = get_service_status('v2ray')
@@ -62,18 +67,17 @@ async def menu(event):
 │  ├─ `XRAY     :` **{status_xray}**
 │  ├─ `V2RAY    :` **{status_v2ray}**
 │  ├─ `DROPBEAR :` **{status_dropbear}**
-│  └─ `PROXY    :` **{status_proxy}**
+│  └─ `NGINX    :` **{status_proxy}**
 │
 ├─ **TOTAL AKUN**
 │  ├─ `SSH      :` **{count_ssh}**
-│  ├─ `Noobz VPN:` **{count_noobz}**
 │  ├─ `Vmess    :` **{count_vmess}**
 │  ├─ `Vless    :` **{count_vless}**
 │  ├─ `Trojan   :` **{count_trojan}**
 │  ├─ `Socks5   :` **{count_socks}**
 │  └─ `ShadowSocks:` **{count_ss}**
 │
-╰─ **(Oleh: @{CONTACT_USERNAME})** ─╯
+╰─ (Oleh: @{CONTACT_USERNAME}) ─╯
 """
 
     # --- 4. Buat Tombol Menu ---
