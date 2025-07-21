@@ -9,23 +9,28 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 # ====================================================================
-# PERUBAHAN UTAMA: Menentukan path absolut untuk file .env dan database
+# PERUBAHAN UTAMA: Menentukan path absolut dan setup logging
 # ====================================================================
-# Menentukan direktori home dari user yang menjalankan (biasanya /root)
 HOME_DIR = Path.home()
-# Menentukan direktori tempat file __init__.py ini berada
 BOT_MODULE_DIR = Path(__file__).parent
-# Path absolut ke file .env
 ENV_PATH = HOME_DIR / ".env"
-# Path absolut ke file database
 DB_PATH = HOME_DIR / "database.db"
+LOG_FILE_PATH = "/tmp/farelbot.log"
+
+# Setup logging to both console and file
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(LOG_FILE_PATH),
+        logging.StreamHandler()
+    ]
+)
 
 # Memuat variabel environment dari path yang ditentukan
 load_dotenv(dotenv_path=ENV_PATH)
 # ====================================================================
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
 uptime = DT.datetime.now()
 
 # Get configuration from environment variables
@@ -38,7 +43,6 @@ API_HASH = "eb06d4abfb49dc3eeb1aeb98ae0f581e"
 
 # Validasi konfigurasi
 if not BOT_TOKEN or not ADMIN_IDS_STR:
-    # Memberikan pesan error yang lebih spesifik
     logging.error(f"BOT_TOKEN dan ADMIN_IDS harus diatur di file {ENV_PATH}")
     sys.exit(1)
 
@@ -50,24 +54,19 @@ except ValueError:
     sys.exit(1)
 
 # Initialize Telegram client
-# Menyimpan file session di direktori home (/root/)
 SESSION_PATH = HOME_DIR / "farelbot"
 bot = TelegramClient(str(SESSION_PATH), API_ID, API_HASH).start(bot_token=BOT_TOKEN)
+logging.info("Bot started successfully.")
 
 # Database setup
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
-
-# Buat tabel admin jika belum ada
 cursor.execute("CREATE TABLE IF NOT EXISTS admin (user_id INTEGER PRIMARY KEY)")
-
-# Bersihkan admin lama dan masukkan yang baru dari .env
 cursor.execute("DELETE FROM admin")
 for admin_id in ADMIN_IDS:
     cursor.execute("INSERT OR IGNORE INTO admin (user_id) VALUES (?)", (admin_id,))
 conn.commit()
 conn.close()
-
 
 def get_db():
 	x = sqlite3.connect(DB_PATH)
@@ -85,23 +84,25 @@ def valid(user_id_str):
 		return "false"
 
 def convert_size(size_bytes):
-   if size_bytes == 0:
-       return "0B"
+   if size_bytes == 0: return "0B"
    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
    i = int(math.floor(math.log(size_bytes, 1024)))
    p = math.pow(1024, i)
    s = round(size_bytes / p, 2)
    return "%s %s" % (s, size_name[i])
 
-# Helper function to run scripts, used by some modules
 def run_script(command, input_text=None):
     try:
         process = subprocess.run(
             command, input=input_text, text=True,
             capture_output=True, shell=True, check=True
         )
+        logging.info(f"Successfully executed: {command}")
         return process.stdout.strip()
     except FileNotFoundError:
+        logging.error(f"Script not found: {command}")
         return f"ERROR: Skrip `{command}` tidak ditemukan."
     except subprocess.CalledProcessError as e:
-        return f"ERROR: {e.stderr.strip() if e.stderr else 'Skrip gagal.'}"
+        error_output = e.stderr.strip() if e.stderr else 'Skrip gagal.'
+        logging.error(f"Error executing '{command}': {error_output}")
+        return f"ERROR: {error_output}"
