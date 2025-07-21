@@ -63,7 +63,6 @@ async def show_trojan_menu(event):
     trojan_menu_text = f"╭─ **MENU TROJAN** ─╮\n│\n├─ Silakan pilih salah satu opsi\n│  untuk mengelola akun Trojan.\n│\n╰─ (Oleh: @{CONTACT_USERNAME}) ─╯"
     buttons = [
         [Button.inline("Buat Akun Trojan", "trojan_create"), Button.inline("Buat Akun Trial", "trojan_trial")],
-        [Button.inline("Perpanjang Akun", "trojan_renew"), Button.inline("Hapus Akun", "trojan_delete")],
         [Button.inline("Cek Login", "trojan_check"), Button.inline("Cek Trafik", "trojan_traffic")],
         [Button.inline("« Kembali ke Menu Utama", "menu")]
     ]
