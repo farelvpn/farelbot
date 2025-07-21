@@ -95,8 +95,6 @@ async def show_ss_menu(event):
     buttons = [
         [Button.inline("Buat Akun SS", "ss_create")],
         [Button.inline("Buat Akun Trial", "ss_trial")],
-        [Button.inline("Perpanjang Akun", "ss_renew")],
-        [Button.inline("Hapus Akun", "ss_delete")],
         [Button.inline("Cek Login Pengguna", "ss_check")],
         [Button.inline("Cek Trafik", "ss_traffic")],
         [Button.inline("« Kembali ke Menu Utama", "menu")]
