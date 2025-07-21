@@ -41,7 +41,7 @@ async def menu(event):
         responder = msg_to_edit.edit
 
     # --- 1. Cek Status Layanan ---
-    status_dnstt = get_service_status('slowdns')
+    status_dnstt = get_service_status('dnstt')
     status_sslh = get_service_status('sslh')
     status_xray = get_service_status('xray')
     status_v2ray = get_service_status('v2ray')
@@ -51,11 +51,11 @@ async def menu(event):
     # --- 2. Hitung Total Akun ---
     count_ssh = get_account_count("awk -F: '$3 >= 1000 && $1 != \"nobody\" {print $1}' /etc/passwd | wc -l")
     count_noobz = get_account_count("cat /etc/noobzvpns/.noobz.db 2>/dev/null | sort | uniq | wc -l")
-    count_trojan = get_account_count("grep -c -E '^#!' /usr/local/etc/v2ray/config.json 2>/dev/null")
-    count_vless = get_account_count("grep -c -E '^#&' /usr/local/etc/v2ray/config.json 2>/dev/null")
-    count_vmess = get_account_count("grep -c -E '^###' /usr/local/etc/v2ray/config.json 2>/dev/null")
-    count_ss = get_account_count("grep -c -E '^###' /usr/local/etc/xray/config.json 2>/dev/null")
-    count_socks = get_account_count("grep -c -E '^###!' /usr/local/etc/xray/config.json 2>/dev/null")
+    count_trojan = get_account_count("grep -c -E '^#!' /usr/local/etc/v2ray/config.json | sort | uniq | wc -l 2>/dev/null")
+    count_vless = get_account_count("grep -c -E '^#&' /usr/local/etc/v2ray/config.json | sort | uniq | wc -l 2>/dev/null")
+    count_vmess = get_account_count("grep -c -E '^###' /usr/local/etc/v2ray/config.json | sort | uniq | wc -l 2>/dev/null")
+    count_ss = get_account_count("grep -c -E '^###' /usr/local/etc/xray/config.json | sort | uniq | wc -l 2>/dev/null")
+    count_socks = get_account_count("grep -c -E '^###!' /usr/local/etc/xray/config.json | sort | uniq | wc -l 2>/dev/null")
 
     # --- 3. Format Pesan ---
     msg = f"""
